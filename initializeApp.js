@@ -10,6 +10,7 @@ module.exports = async client => {
 				['moderation', 'mod commands'],
 				['misc', 'misc commands'],
 				['utility', 'Utility commands.'],
+				['greetings', 'Greeting commands.'],
 			])
 			.registerDefaults()
 			.registerCommandsIn(path.join(__dirname, 'commands'));
