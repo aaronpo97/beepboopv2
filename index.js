@@ -18,6 +18,9 @@ client.on('message', message => {
 	automod(message);
 	beanChat(message);
 });
+client.on('messageUpdate', message => {
+	beanChat(message);
+});
 client.on('channelDelete', channel => checkDeletedChannel(channel));
 client.on('guildCreate', guild => registerGuild(guild));
 client.on('guildDelete', guild => unregisterGuild(guild));
