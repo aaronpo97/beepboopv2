@@ -15,11 +15,13 @@ const beanChat = require('./beanChat');
 
 client.on('ready', () => initializeApp(client));
 client.on('message', message => {
+	const content = message.content;
 	automod(message);
-	beanChat(message);
+	beanChat(message, content);
 });
 client.on('messageUpdate', message => {
-	beanChat(message);
+	const content = message.reactions.content;
+	beanChat(message, content);
 });
 client.on('channelDelete', channel => checkDeletedChannel(channel));
 client.on('guildCreate', guild => registerGuild(guild));
