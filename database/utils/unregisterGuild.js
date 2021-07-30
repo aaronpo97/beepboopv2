@@ -1,5 +1,5 @@
 const ServerInfo = require('../schemas/ServerInfo');
-const unregisterGuild = async guild => {
+const unregisterGuild = async (guild) => {
 	const { id: guildID } = guild;
 	const unregisteredServer = await ServerInfo.deleteMany({ guildID });
 };

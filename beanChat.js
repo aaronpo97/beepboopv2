@@ -6,7 +6,7 @@ module.exports = async (message, content) => {
 		if (message.author.bot || message.channel.id !== '821961323020943361') {
 			return;
 		}
-		if (content !== filter) {
+		if (content.toLowerCase() !== filter) {
 			setTimeout(() => message.delete(), 1500);
 			const reply = await message.channel.send(
 				`In this channel you are only allowed to say ${filter}.`
