@@ -11,20 +11,20 @@ const automod = require('./automod');
 const checkDeletedChannel = require('./database/utils/checkDeletedChannel');
 const registerGuild = require('./database/utils/registerGuild');
 const unregisterGuild = require('./database/utils/unregisterGuild');
-const beanChat = require('./beanChat');
+const filterChat = require('./filterChat.js');
 
 client.on('ready', () => initializeApp(client));
-client.on('message', message => {
+client.on('message', (message) => {
 	const content = message.content;
 	automod(message);
-	beanChat(message, content);
+	filterChat(message, content);
 });
-client.on('messageUpdate', message => {
-	const content = message.reactions.content;
-	beanChat(message, content);
+client.on('messageUpdate', (message) => {
+	const { content } = message.reactions.message;
+	filterChat(message, content);
 });
-client.on('channelDelete', channel => checkDeletedChannel(channel));
-client.on('guildCreate', guild => registerGuild(guild));
-client.on('guildDelete', guild => unregisterGuild(guild));
+client.on('channelDelete', (channel) => checkDeletedChannel(channel));
+client.on('guildCreate', (guild) => registerGuild(guild));
+client.on('guildDelete', (guild) => unregisterGuild(guild));
 
 client.login(process.env.BOT_TOKEN);

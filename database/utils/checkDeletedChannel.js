@@ -1,19 +1,26 @@
 const ServerInfo = require('../schemas/ServerInfo');
-const checkDeletedChannel = async channel => {
+const checkDeletedChannel = async (channel) => {
 	const { id: channelID } = channel;
 	const { id: guildID } = channel.guild;
 
-	console.log(guildID, channelID);
 	const serverInfo = await ServerInfo.findOne({ guildID });
-
 	if (!serverInfo) return;
 
-	const { supportChannelID } = serverInfo;
-	if (!supportChannelID || supportChannelID !== channelID) return;
+	const { supportChannelID, filterChannel } = serverInfo;
+	const { filterChannelID } = filterChannel;
+
 	if (supportChannelID === channelID) {
 		serverInfo.supportChannelID = null;
 		await serverInfo.save();
-	} else return;
+	}
+	if (filterChannelID === channelID) {
+		serverInfo.filterChannel = {
+			filterChannelID: null,
+			filter: null,
+		};
+		await serverInfo.save();
+	}
+	return;
 };
 
 module.exports = checkDeletedChannel;

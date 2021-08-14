@@ -1,21 +1,21 @@
-const errorTimeoutMessage = 'The command timed out. Please try again.';
-
-const messageCollectionConfig = { max: 1, time: 10000 };
-const commandTimeoutMessage = `\nThis command will timeout after ${(messageCollectionConfig.time / 1000).toFixed(2)} ${
-	messageCollectionConfig.time / 1000 === 1 ? 'second' : 'seconds'
-}.`;
 const ServerInfo = require('../../../database/schemas/ServerInfo');
-module.exports = async message => {
+const { errorTimeoutMessage, messageCollectionConfig, commandTimeoutMessage } = require('./messageCollector.js');
+
+module.exports = async (message) => {
 	try {
 		message.channel.send(
-			'To initialize the support command, reply with a channel to be used for support messages. (#channel)' +
-				commandTimeoutMessage
+			'To initialize the support command, reply with a channel to be used for support messages. (#channel)' + commandTimeoutMessage
 		);
-		const collectA1 = await message.channel.awaitMessages(m => m.author.id == message.author.id, messageCollectionConfig);
+		const collectA1 = await message.channel.awaitMessages((m) => m.author.id == message.author.id, messageCollectionConfig);
+		if (!collectA1.first()) throw new Error(errorTimeoutMessage);
 		const supportChannel = collectA1.first().content;
+
+		if (supportChannel[0] !== '<' && supportChannel[1] !== '#') {
+			throw new Error(`You did not provide a valid channel name. (eg. '#channel'). Command aborted.`);
+		}
 		message.channel.send(`You have chosen: ${supportChannel}. Is that correct? (yes/no)` + commandTimeoutMessage);
 
-		const collectAnswer = await message.channel.awaitMessages(m => m.author.id == message.author.id, messageCollectionConfig);
+		const collectAnswer = await message.channel.awaitMessages((m) => m.author.id == message.author.id, messageCollectionConfig);
 		if (!collectAnswer) throw new Error(errorTimeoutMessage);
 		if (collectAnswer.first().content.toLowerCase() === 'yes') {
 			const supportChannelID = supportChannel.slice(2, -1);
@@ -23,14 +23,14 @@ module.exports = async message => {
 			serverToEdit.supportChannelID = supportChannelID;
 			await serverToEdit.save();
 
-			message.channel.send(`Your server is now registered within our database with the following information:`);
+			message.channel.send(`Your server is now registered in our database with the following information:`);
 			await message.channel.send(
 				`Guild Name: ${message.guild.name}, Guild ID: ${message.guild.id}, Support Channel: <#${supportChannelID}>`
 			);
 		} else {
-			throw new Error();
+			message.channel.send('Command aborted.');
 		}
 	} catch (error) {
-		message.channel.send(error.message ? error.message : 'Command aborted.');
+		message.channel.send('Error: ' + error.message || 'Command aborted.');
 	}
 };
