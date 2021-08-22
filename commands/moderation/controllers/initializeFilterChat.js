@@ -31,9 +31,10 @@ module.exports = async (message, queriedServerInfo) => {
 		throw new Error();
 	}
 
-	message.channel.send(`Awesome the filter chat will be ${filterChannel}, and the filter phrase will be '${filterPhrase}'.`);
+	message.channel.send(`Awesome. The filter chat will be ${filterChannel}, and the filter phrase will be '${filterPhrase}'.`);
 
 	const filterChannelID = filterChannel.slice(2, -1);
 	queriedServerInfo.filterChannel = { filterChannelID, filter: filterPhrase };
+
 	await queriedServerInfo.save();
 };

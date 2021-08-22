@@ -1,8 +1,8 @@
 const Commando = require('discord.js-commando');
 const ServerInfo = require('../../database/schemas/ServerInfo');
-
-const initSupportChannel = require('./controllers/initializeSupportChannel');
+const assignSupportChannel = require('./controllers/assignSupportChannel');
 const updateSupportChannel = require('./controllers/updateSupportChannel');
+const createSupportChannel = require('./controllers/createSupportChannel');
 
 module.exports = class InitSupportCommand extends Commando.Command {
 	constructor(client) {
@@ -13,7 +13,7 @@ module.exports = class InitSupportCommand extends Commando.Command {
 			memberName: 'support-init',
 			description: 'Initialize the support command.',
 			argsType: 'single',
-			clientPermissions: ['ADMINISTRATOR'],
+			clientPermissions: ['MANAGE_CHANNELS', 'MANAGE_MESSAGES'],
 			userPermissions: ['ADMINISTRATOR'],
 			guildOnly: true,
 		});
@@ -29,7 +29,8 @@ module.exports = class InitSupportCommand extends Commando.Command {
 		const { supportChannelID } = queriedServerInfo;
 
 		if (!supportChannelID) {
-			await initSupportChannel(message);
+			// await assignSupportChannel(message);
+			await createSupportChannel(message, queriedServerInfo);
 		} else {
 			await updateSupportChannel(message, queriedServerInfo);
 		}

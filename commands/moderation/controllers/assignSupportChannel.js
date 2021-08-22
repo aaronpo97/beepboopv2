@@ -6,7 +6,7 @@ module.exports = async (message) => {
 		message.channel.send(
 			'To initialize the support command, reply with a channel to be used for support messages. (#channel)' + commandTimeoutMessage
 		);
-		const collectA1 = await message.channel.awaitMessages((m) => m.author.id == message.author.id, messageCollectionConfig);
+		const collectA1 = await message.channel.awaitMessages((response) => filter(response, message), messageCollectionConfig);
 		if (!collectA1.first()) throw new Error(errorTimeoutMessage);
 		const supportChannel = collectA1.first().content;
 
@@ -15,7 +15,7 @@ module.exports = async (message) => {
 		}
 		message.channel.send(`You have chosen: ${supportChannel}. Is that correct? (yes/no)` + commandTimeoutMessage);
 
-		const collectAnswer = await message.channel.awaitMessages((m) => m.author.id == message.author.id, messageCollectionConfig);
+		const collectAnswer = await message.channel.awaitMessages((response) => filter(response, message), messageCollectionConfig);
 		if (!collectAnswer) throw new Error(errorTimeoutMessage);
 		if (collectAnswer.first().content.toLowerCase() === 'yes') {
 			const supportChannelID = supportChannel.slice(2, -1);

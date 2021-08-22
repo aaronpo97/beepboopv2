@@ -11,6 +11,7 @@ const automod = require('./automod');
 const checkDeletedChannel = require('./database/utils/checkDeletedChannel');
 const registerGuild = require('./database/utils/registerGuild');
 const unregisterGuild = require('./database/utils/unregisterGuild');
+const updateGuild = require('./database/utils/updateGuild');
 const filterChat = require('./filterChat.js');
 
 client.on('ready', () => initializeApp(client));
@@ -26,5 +27,11 @@ client.on('messageUpdate', (message) => {
 client.on('channelDelete', (channel) => checkDeletedChannel(channel));
 client.on('guildCreate', (guild) => registerGuild(guild));
 client.on('guildDelete', (guild) => unregisterGuild(guild));
+client.on('guildUpdate', (oldGuild, newGuild) => updateGuild(oldGuild, newGuild));
+
+// {
+// 	console.log(`One of the connected guilds was changed: ${oldGuild.name} is now ${newGuild.name}`);
+
+// });
 
 client.login(process.env.BOT_TOKEN);
