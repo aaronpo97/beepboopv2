@@ -1,4 +1,4 @@
-const { messageCollectionConfig, filter } = require('./messageCollector');
+const { messageCollectionConfig, filter } = require('../utilities/collectorUtil');
 
 module.exports = async (message, queriedServerInfo) => {
 	message.channel.send('You do not have a support channel assigned. Would you like to create one?');

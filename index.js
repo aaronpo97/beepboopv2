@@ -1,10 +1,7 @@
 require('dotenv').config();
-
+const { BOT_OWNER, BOT_PREFIX, BOT_TOKEN } = process.env;
 const Commando = require('discord.js-commando');
-const client = new Commando.CommandoClient({
-	owner: process.env.BOT_OWNER,
-	commandPrefix: process.env.BOT_PREFIX,
-});
+const client = new Commando.CommandoClient({ owner: BOT_OWNER, commandPrefix: BOT_PREFIX });
 
 const initializeApp = require('./initializeApp');
 const automod = require('./automod');
@@ -29,9 +26,4 @@ client.on('guildCreate', (guild) => registerGuild(guild));
 client.on('guildDelete', (guild) => unregisterGuild(guild));
 client.on('guildUpdate', (oldGuild, newGuild) => updateGuild(oldGuild, newGuild));
 
-// {
-// 	console.log(`One of the connected guilds was changed: ${oldGuild.name} is now ${newGuild.name}`);
-
-// });
-
-client.login(process.env.BOT_TOKEN);
+client.login(BOT_TOKEN);

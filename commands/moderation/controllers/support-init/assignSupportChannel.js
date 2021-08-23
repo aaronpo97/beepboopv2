@@ -1,5 +1,5 @@
 const ServerInfo = require('../../../database/schemas/ServerInfo');
-const { errorTimeoutMessage, messageCollectionConfig, commandTimeoutMessage } = require('./messageCollector.js');
+const { errorTimeoutMessage, messageCollectionConfig, commandTimeoutMessage } = require('../utilities/collectorUtil.js');
 
 module.exports = async (message) => {
 	try {
@@ -24,9 +24,7 @@ module.exports = async (message) => {
 			await serverToEdit.save();
 
 			message.channel.send(`Your server is now registered in our database with the following information:`);
-			await message.channel.send(
-				`Guild Name: ${message.guild.name}, Guild ID: ${message.guild.id}, Support Channel: <#${supportChannelID}>`
-			);
+			await message.channel.send(`Guild Name: ${message.guild.name}, Guild ID: ${message.guild.id}, Support Channel: <#${supportChannelID}>`);
 		} else {
 			message.channel.send('Command aborted.');
 		}

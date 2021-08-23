@@ -1,8 +1,8 @@
 const Commando = require('discord.js-commando');
 const ServerInfo = require('../../database/schemas/ServerInfo');
-const assignSupportChannel = require('./controllers/assignSupportChannel');
-const updateSupportChannel = require('./controllers/updateSupportChannel');
-const createSupportChannel = require('./controllers/createSupportChannel');
+const assignSupportChannel = require('./controllers/support-init/assignSupportChannel');
+const updateSupportChannel = require('./controllers/support-init/updateSupportChannel');
+const createSupportChannel = require('./controllers/support-init/createSupportChannel');
 
 module.exports = class InitSupportCommand extends Commando.Command {
 	constructor(client) {

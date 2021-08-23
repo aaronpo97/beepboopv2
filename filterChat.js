@@ -3,6 +3,7 @@ const ServerInfo = require('./database/schemas/ServerInfo');
 
 module.exports = async (message, content) => {
 	try {
+		if (!message.guild) return;
 		const currentGuild = await ServerInfo.findOne({ guildID: message.guild.id });
 
 		if (!currentGuild) return;
