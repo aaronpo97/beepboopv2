@@ -29,8 +29,8 @@ module.exports = class InitSupportCommand extends Commando.Command {
 		const { supportChannelID } = queriedServerInfo;
 
 		if (!supportChannelID) {
-			await assignSupportChannel(message, queriedServerInfo);
-			// await createSupportChannel(message, queriedServerInfo);
+			// await assignSupportChannel(message, queriedServerInfo);
+			await createSupportChannel(message, queriedServerInfo);
 		} else {
 			await updateSupportChannel(message, queriedServerInfo);
 		}

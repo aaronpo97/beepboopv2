@@ -1,40 +1,41 @@
-const { errorTimeoutMessage, messageCollectionConfig, commandTimeoutMessage } = require('../../utilities/collectorUtil');
+const { errorTimeoutMessage, config, commandTimeoutMessage, filter } = require('../../utilities/collectorUtil');
 module.exports = async (message, queriedServerInfo) => {
+	// QUESTION 1
 	message.channel.send('You have no filter channel. Would you like to set one up?');
-	const collectAnswer = await message.channel.awaitMessages((m) => m.author.id == message.author.id, messageCollectionConfig);
+	const collectConfirmationOne = await message.channel.awaitMessages(response => filter(response, message), config);
+	if (!collectConfirmationOne.first()) throw new Error(errorTimeoutMessage);
+	const confirmationOne = collectConfirmationOne.first().content.toLowerCase();
+	if (confirmationOne !== 'yes') throw new Error();
 
-	if (!collectAnswer.first()) throw new Error(errorTimeoutMessage);
-	if (collectAnswer.first().content.toLowerCase() !== 'yes') {
-		throw new Error();
-	}
-
+	// QUESTION 2
 	message.channel.send('Please choose a channel to be used for the filter chat.');
-	const collectChannelChoice = await message.channel.awaitMessages((m) => m.author.id === message.author.id, messageCollectionConfig);
-
+	const collectChannelChoice = await message.channel.awaitMessages(response => filter(response, message), config);
+	if (!collectChannelChoice.first()) throw new Error();
 	const filterChannel = collectChannelChoice.first().content;
 
+	// QUESTION 3
 	message.channel.send(`You chose: ${filterChannel}. Is that correct? (yes/no)`);
-	const collectConfirmationOne = await message.channel.awaitMessages((m) => m.author.id === message.author.id, messageCollectionConfig);
-	if (collectConfirmationOne.first().content !== 'yes') {
-		throw new Error();
-	}
+	const collectConfirmationTwo = await message.channel.awaitMessages(response => filter(response, message), config);
+	if (!collectConfirmationTwo.first()) throw new Error(errorTimeoutMessage);
+	const confirmationTwo = collectConfirmationTwo.first().content.toLowerCase();
+	if (confirmationTwo !== 'yes') throw new Error();
 
+	// QUESTION 4
 	message.channel.send('Awesome! Please choose a filter phrase.');
-	const filterPhraseCollection = await message.channel.awaitMessages((m) => m.author.id === message.author.id, messageCollectionConfig);
+	const collectFilterPhrase = await message.channel.awaitMessages(response => filter(response, message), config);
+	if (!collectFilterPhrase.first()) throw new Error();
+	const filterPhrase = collectFilterPhrase.first().content;
 
-	const filterPhrase = filterPhraseCollection.first().content;
+	// QUESTION 5
 	message.channel.send(`You chose the phrase: '${filterPhrase}'. Is that correct? `);
+	const collectConfirmationThree = await message.channel.awaitMessages(response => filter(response, message), config);
+	if (!collectConfirmationThree.first()) throw new Error();
+	const confirmationThree = collectConfirmationThree.first().content.toLowerCase();
+	if (confirmationThree !== 'yes') throw new Error();
 
-	const collectConfirmationTwo = await message.channel.awaitMessages((m) => m.author.id === message.author.id, messageCollectionConfig);
-
-	if (collectConfirmationTwo.first().content !== 'yes') {
-		throw new Error();
-	}
-
-	message.channel.send(`Awesome. The filter chat will be ${filterChannel}, and the filter phrase will be '${filterPhrase}'.`);
-
+	// ASSIGN FILTER CHAT
 	const filterChannelID = filterChannel.slice(2, -1);
+	message.channel.send(`Awesome. The filter chat will be ${filterChannel}, and the filter phrase will be '${filterPhrase}'.`);
 	queriedServerInfo.filterChannel = { filterChannelID, filter: filterPhrase };
-
 	await queriedServerInfo.save();
 };
