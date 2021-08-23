@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"main": "index.js",
 	"scripts": {
-		"dev": "nodemon .",
+		"dev": "nodemon . dnd",
 		"start": "node .",
 		"start dnd": "node . dnd",
 		"start invisible": "node . invisible",

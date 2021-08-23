@@ -1,8 +1,8 @@
 const Commando = require('discord.js-commando');
 const ServerInfo = require('../../database/schemas/ServerInfo');
 
-const intializeFilterChat = require('./controllers/initializeFilterChat');
-const { messageCollectionConfig } = require('./controllers/messageCollector');
+const intializeFilterChat = require('./controllers/filter-chat-init/initializeFilterChat');
+const { messageCollectionConfig } = require('./utilities/collectorUtil');
 
 module.exports = class InitFilterChatCommand extends Commando.Command {
 	constructor(client) {

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 const { licenseDisclaimer } = require('./miscUtil');
 
-module.exports = async client => {
+module.exports = async (client) => {
 	try {
 		client.registry
 			.registerGroups([
@@ -30,8 +30,8 @@ module.exports = async client => {
 
 		console.log(`${client.user.tag.red} is now live. \n`);
 		console.log(`Now connected to:`);
-		client.guilds.cache.forEach(guild => console.log(guild.name));
-		console.log(`\nStatus set to ${status == 'online' ? status.green : status.red}.`);
+		client.guilds.cache.forEach((guild) => console.log(guild.name));
+		console.log(`\nStatus set to ${status == 'online' ? status.green : status.red}.\n`);
 	} catch (error) {
 		console.log('Something went wrong: ' + error.stack);
 	}

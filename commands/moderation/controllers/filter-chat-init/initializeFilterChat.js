@@ -1,4 +1,4 @@
-const { errorTimeoutMessage, messageCollectionConfig, commandTimeoutMessage } = require('./messageCollector.js');
+const { errorTimeoutMessage, messageCollectionConfig, commandTimeoutMessage } = require('../../utilities/collectorUtil');
 module.exports = async (message, queriedServerInfo) => {
 	message.channel.send('You have no filter channel. Would you like to set one up?');
 	const collectAnswer = await message.channel.awaitMessages((m) => m.author.id == message.author.id, messageCollectionConfig);

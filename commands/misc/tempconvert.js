@@ -48,15 +48,13 @@ module.exports = class TemperatureConvertCommand extends Commando.Command {
 			message.channel.send(`${initialTemp} K is ${kelToCel(initialTemp).toFixed(2)}° C`);
 			return;
 		}
-		if (convertedUnit === 'C' && initialUnit === 'K') {
+		if (initialUnit === 'C' && convertedUnit === 'K') {
 			message.channel.send(`${initialTemp} ° C is ${celToKel(initialTemp).toFixed(2)} K`);
 		}
 
 		if (initialUnit === convertedUnit) {
 			message.channel.send(
-				`${initialTemp}${checkIfUsesDegree(initialUnit)} ${initialUnit} is ${initialTemp}${checkIfUsesDegree(
-					initialUnit
-				)} ${initialUnit}.`
+				`${initialTemp}${checkIfUsesDegree(initialUnit)} ${initialUnit} is ${initialTemp}${checkIfUsesDegree(initialUnit)} ${initialUnit}.`
 			);
 			await message.channel.send(`Did you really need me to tell you that? You're a nitwit.`);
 			return;
