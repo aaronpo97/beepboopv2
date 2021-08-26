@@ -2,7 +2,7 @@ const Commando = require('discord.js-commando');
 const ServerInfo = require('../../database/schemas/ServerInfo');
 
 const intializeFilterChat = require('./controllers/filter-chat-init/initializeFilterChat');
-const { messageCollectionConfig } = require('./utilities/collectorUtil');
+// const { messageCollectionConfig } = require('./utilities/collectorUtil');
 
 module.exports = class InitFilterChatCommand extends Commando.Command {
 	constructor(client) {
@@ -38,7 +38,10 @@ module.exports = class InitFilterChatCommand extends Commando.Command {
 			message.channel.send(`Your filter chat is currently set to <#${filterChannelID}> with the filter: \`'${filter}'\``);
 			message.channel.send(`Would you like to: \n [1] Change the channel, [2] Change the filter phrase., [3] Exit`);
 
-			const updateCollector = await message.channel.awaitMessages((m) => m.author.id === message.author.id, messageCollectionConfig);
+			const updateCollector = await message.channel.awaitMessages(
+				m => m.author.id === message.author.id,
+				messageCollectionConfig
+			);
 
 			if (!updateCollector.first()) {
 				throw new Error('Command aborted.');
@@ -49,7 +52,7 @@ module.exports = class InitFilterChatCommand extends Commando.Command {
 				case '1': //change the channel
 					message.channel.send('What channel do you want the filter chat to be set to?');
 					const collectChannelUpdate = await message.channel.awaitMessages(
-						(m) => m.author.id === message.author.id,
+						m => m.author.id === message.author.id,
 						messageCollectionConfig
 					);
 

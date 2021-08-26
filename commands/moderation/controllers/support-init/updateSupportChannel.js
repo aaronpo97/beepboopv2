@@ -1,32 +1,25 @@
-const { errorTimeoutMessage, config, commandTimeoutMessage, filter } = require('../../utilities/collectorUtil.js');
+const collectMessageContent = require('../../utilities/collectMessageContent.js');
 
 module.exports = async (message, queriedServerInfo) => {
 	try {
 		// FIRST QUESTION
-		message.channel.send(`A support channel is already registered. Would you like to update the information? (Yes/No)` + commandTimeoutMessage);
-		const collectFirstConfirmation = await message.channel.awaitMessages(response => filter(response, message), config);
-		if (!collectFirstConfirmation.first()) throw new Error(errorTimeoutMessage);
-		const firstConfirmation = collectFirstConfirmation.first().content.toLowerCase();
+		const questionOne = `A support channel is already registered. Would you like to update the information? (Yes/No)`;
+		const firstConfirmation = await collectMessageContent(message, questionOne);
 		if (firstConfirmation !== 'yes') throw new Error();
 
 		// SECOND QUESTION
-		message.channel.send(`The support channel is: <#${queriedServerInfo.supportChannelID}>. Is this correct? (Yes/No)` + commandTimeoutMessage);
-		const collectSecondConfirmation = await message.channel.awaitMessages(response => filter(response, message), config);
-		if (!collectSecondConfirmation.first()) throw new Error(errorTimeoutMessage);
-		const secondConfirmation = collectSecondConfirmation.first().content.toLowerCase();
+		const questionTwo = `The support channel is: <#${queriedServerInfo.supportChannelID}>. Is this correct? (Yes/No)`;
+		const secondConfirmation = await collectMessageContent(message, questionTwo);
 		if (secondConfirmation !== 'no') throw new Error();
 
 		// THIRD QUESTION
-		message.channel.send('Please indicate the new support channel. (#channel)' + commandTimeoutMessage);
-		const collectChannelName = await message.channel.awaitMessages(response => filter(response, message), config);
-		if (!collectChannelName.first()) throw new Error(errorTimeoutMessage);
-		const updatedSupportChannel = collectChannelName.first().content;
+		const questionThree = 'Please indicate the new support channel. (#channel)';
+		const updatedSupportChannel = await collectMessageContent(message, questionThree);
+		if (!updatedSupportChannel) throw new Error();
 
 		// FOURTH QUESTION
-		message.channel.send(`You chose: ${updatedSupportChannel}. Please confirm this is the channel you want. (Yes/No)` + commandTimeoutMessage);
-		const collectThirdConfirmation = await message.channel.awaitMessages(response => filter(response, message), config);
-		if (!collectThirdConfirmation.first()) throw new Error(errorTimeoutMessage);
-		const thirdConfirmation = collectThirdConfirmation.first().content.toLowerCase();
+		const questionFour = `You chose: ${updatedSupportChannel}. Please confirm this is the channel you want. (Yes/No)`;
+		const thirdConfirmation = await collectMessageContent(message, questionFour);
 		if (thirdConfirmation !== 'yes') throw new Error();
 
 		// UPDATE SUPPORT CHANNEL

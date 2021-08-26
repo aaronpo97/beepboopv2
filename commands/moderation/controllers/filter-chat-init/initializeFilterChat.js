@@ -1,4 +1,4 @@
-const { errorTimeoutMessage, config, commandTimeoutMessage, filter } = require('../../utilities/collectorUtil');
+const collectMessageContent = require('../../utilities/collectMessageContent');
 module.exports = async (message, queriedServerInfo) => {
 	// QUESTION 1
 	message.channel.send('You have no filter channel. Would you like to set one up?');

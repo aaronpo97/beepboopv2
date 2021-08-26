@@ -4,6 +4,8 @@ const assignSupportChannel = require('./controllers/support-init/assignSupportCh
 const updateSupportChannel = require('./controllers/support-init/updateSupportChannel');
 const createSupportChannel = require('./controllers/support-init/createSupportChannel');
 
+const collectMessageContent = require('./utilities/collectMessageContent');
+
 module.exports = class InitSupportCommand extends Commando.Command {
 	constructor(client) {
 		super(client, {
@@ -29,8 +31,26 @@ module.exports = class InitSupportCommand extends Commando.Command {
 		const { supportChannelID } = queriedServerInfo;
 
 		if (!supportChannelID) {
-			// await assignSupportChannel(message, queriedServerInfo);
-			await createSupportChannel(message, queriedServerInfo);
+			let exitLoop = false;
+			while (!exitLoop) {
+				const questionOne =
+					'Would you like to: **[1]** Create a support channel, or **[2]** Assign a channel for support messages **(1 or 2)**?';
+				const collectUserChoice = await collectMessageContent(message, questionOne);
+				const userChoice = collectUserChoice;
+
+				switch (userChoice) {
+					case '1':
+						await createSupportChannel(message, queriedServerInfo);
+						exitLoop = true;
+						break;
+					case '2':
+						await assignSupportChannel(message, queriedServerInfo);
+						exitLoop = true;
+						break;
+					default:
+						break;
+				}
+			}
 		} else {
 			await updateSupportChannel(message, queriedServerInfo);
 		}

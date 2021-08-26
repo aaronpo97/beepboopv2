@@ -1,21 +1,19 @@
-const { errorTimeoutMessage, config, commandTimeoutMessage, filter } = require('../../utilities/collectorUtil.js');
+const collectMessageContent = require('../../utilities/collectMessageContent.js');
 
 module.exports = async (message, queriedServerInfo) => {
 	try {
 		// QUESTION ONE
-		message.channel.send('Please reply with a channel to be used for support messages. (#channel)' + commandTimeoutMessage);
-		const collectChannelName = await message.channel.awaitMessages(response => filter(response, message), config);
-		if (!collectChannelName.first()) throw new Error(errorTimeoutMessage);
-		const supportChannel = collectChannelName.first().content;
+		const questionOne = 'Please reply with a channel to be used for support messages. (#channel)';
+		const supportChannel = collectMessageContent(message, questionOne);
+		if (!supportChannel) throw new Error();
 
 		// QUESTION TWO
-		message.channel.send(`You chose: ${supportChannel}. Is that correct? (yes/no)` + commandTimeoutMessage);
-		const collectConfirmation = await message.channel.awaitMessages(response => filter(response, message), config);
-		if (!collectConfirmation.first()) throw new Error(errorTimeoutMessage);
-		const confirmation = collectConfirmation.first().content.toLowerCase();
+		const questionTwo = `You chose: ${supportChannel}. Is that correct? (yes/no)`;
+		const confirmation = collectMessageContent(message, questionTwo);
 		if (confirmation !== 'yes') throw new Error();
 
 		// ASSIGN SUPPORT CHANNEL
+		message.channel.send(`Awesome! The support channel is now: ${supportChannel}`);
 		const supportChannelID = supportChannel.slice(2, -1);
 		queriedServerInfo.supportChannelID = supportChannelID;
 		await queriedServerInfo.save();

@@ -3,12 +3,14 @@ const mongoose = require('mongoose');
 const path = require('path');
 const { licenseDisclaimer } = require('./miscUtil');
 
-module.exports = async (client) => {
+module.exports = async client => {
+	licenseDisclaimer();
+
 	try {
 		client.registry
 			.registerGroups([
-				['moderation', 'mod commands'],
-				['misc', 'misc commands'],
+				['moderation', 'Moderation commands'],
+				['misc', 'Misc. commands'],
 				['utility', 'Utility commands.'],
 				['greetings', 'Greeting commands.'],
 			])
@@ -21,16 +23,13 @@ module.exports = async (client) => {
 		if (!validStatusType.includes(status)) status = 'online';
 		client.user.setStatus(status);
 
-		console.log('\n');
-		licenseDisclaimer();
-
 		await mongoose.connect(process.env.MONGO_SERVER_LINK, { useNewUrlParser: true, useUnifiedTopology: true });
 
 		console.log('MongoDB connection established. \n');
 
 		console.log(`${client.user.tag.red} is now live. \n`);
 		console.log(`Now connected to:`);
-		client.guilds.cache.forEach((guild) => console.log(guild.name));
+		client.guilds.cache.forEach(guild => console.log('=> ' + guild.name));
 		console.log(`\nStatus set to ${status == 'online' ? status.green : status.red}.\n`);
 	} catch (error) {
 		console.log('Something went wrong: ' + error.stack);

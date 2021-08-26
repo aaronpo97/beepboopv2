@@ -5,6 +5,7 @@ const dividingLine = (symbol, num) => {
 	}
 };
 const licenseDisclaimer = () => {
+	console.log('\n');
 	dividingLine('*', 100);
 	console.log(`\nCopyright © 2021 Aaron William Po.`);
 	console.log(`This program comes with ABSOLUTELY NO WARRANTY. \n`);
