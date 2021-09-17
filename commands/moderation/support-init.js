@@ -33,9 +33,9 @@ module.exports = class InitSupportCommand extends Commando.Command {
 		if (!supportChannelID) {
 			let exitLoop = false;
 			while (!exitLoop) {
-				const questionOne =
+				const initQuestion =
 					'Would you like to: **[1]** Create a support channel, or **[2]** Assign a channel for support messages **(1 or 2)**?';
-				const collectUserChoice = await collectMessageContent(message, questionOne);
+				const collectUserChoice = await collectMessageContent(message, initQuestion);
 				const userChoice = collectUserChoice;
 
 				switch (userChoice) {
@@ -52,7 +52,7 @@ module.exports = class InitSupportCommand extends Commando.Command {
 				}
 			}
 		} else {
-			await updateSupportChannel(message, queriedServerInfo);
+			await updateSupportChannel(message, queriedServerInfo, this.client);
 		}
 	}
 };

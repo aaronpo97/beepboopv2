@@ -4,12 +4,14 @@ module.exports = async (message, queriedServerInfo) => {
 	try {
 		// QUESTION ONE
 		const questionOne = 'Please reply with a channel to be used for support messages. (#channel)';
-		const supportChannel = collectMessageContent(message, questionOne);
+		const supportChannel = await collectMessageContent(message, questionOne);
 		if (!supportChannel) throw new Error();
+
+		//TODO - add some sort of checker to see if it's a valid channel
 
 		// QUESTION TWO
 		const questionTwo = `You chose: ${supportChannel}. Is that correct? (yes/no)`;
-		const confirmation = collectMessageContent(message, questionTwo);
+		const confirmation = await collectMessageContent(message, questionTwo);
 		if (confirmation !== 'yes') throw new Error();
 
 		// ASSIGN SUPPORT CHANNEL

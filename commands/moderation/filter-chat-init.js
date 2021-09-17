@@ -29,7 +29,7 @@ module.exports = class InitFilterChatCommand extends Commando.Command {
 
 		let exitLoop = false;
 
-		if (queriedServerInfo.filterChannel.filterChannelID) {
+		if (!queriedServerInfo.filterChannel.filterChannelID) {
 			await intializeFilterChat(message, queriedServerInfo);
 			exitLoop = true;
 		}

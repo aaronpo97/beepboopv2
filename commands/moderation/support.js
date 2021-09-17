@@ -30,7 +30,7 @@ module.exports = class SupportCommand extends Commando.Command {
 		if (!supportChannelID) {
 			message.react('❌');
 			await message.channel.send(
-				'The server administrator needs to indicate a support channel id. This command is unavailable until then.'
+				'The server administrator needs create a support channel. This command is unavailable until then.'
 			);
 			return;
 		}
@@ -42,7 +42,9 @@ module.exports = class SupportCommand extends Commando.Command {
 			await message.channel.send(`You didn't provide a reason for your support ticket.`);
 			return;
 		}
-		const replyEmbed = new Discord.MessageEmbed().setTitle('Requesting mod help.').addFields({ name: 'Reason', value: reason });
+		const replyEmbed = new Discord.MessageEmbed()
+			.setTitle('Requesting mod help.')
+			.addFields({ name: 'Reason', value: reason });
 		message.react('✅');
 		await message.channel.send(replyEmbed);
 

@@ -1,10 +1,11 @@
-const validUnits = ['C', 'F', 'K'];
-const celToFar = (cel) => cel * (9 / 5) + 32;
-const farToCel = (far) => (far - 32) * (5 / 9);
-const celToKel = (cel) => cel + 273.15;
-const kelToCel = (kel) => kel - 273.15;
-const farToKel = (far) => celToKel(farToCel(far));
-const kelToFar = (kel) => celToFar(kelToCel(kel));
-const checkIfUsesDegree = (initialUnit) => (initialUnit === 'K' ? '' : '°');
-
-module.exports = { validUnits, celToFar, farToCel, celToKel, kelToCel, farToKel, kelToFar, checkIfUsesDegree };
+module.exports = {
+	validUnits: ['C', 'F', 'K'],
+	celToFar: cel => cel * (9 / 5) + 32,
+	farToCel: far => (far - 32) * (5 / 9),
+	celToKel: cel => cel + 273.15,
+	kelToCel: kel => kel - 273.15,
+	farToKel: far => celToKel(farToCel(far)),
+	kelToFar: kel => celToFar(kelToCel(kel)),
+	checkIfUsesDegree: unit => (unit === 'K' ? '' : '°'),
+	noConversion: temp => temp,
+};

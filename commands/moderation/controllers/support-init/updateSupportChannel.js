@@ -1,32 +1,58 @@
 const collectMessageContent = require('../../utilities/collectMessageContent.js');
 
-module.exports = async (message, queriedServerInfo) => {
+module.exports = async (message, queriedServerInfo, client) => {
 	try {
 		// FIRST QUESTION
 		const questionOne = `A support channel is already registered. Would you like to update the information? (Yes/No)`;
 		const firstConfirmation = await collectMessageContent(message, questionOne);
-		if (firstConfirmation !== 'yes') throw new Error();
+		if (!firstConfirmation) return;
+		if (!(firstConfirmation === 'yes' || firstConfirmation === 'y')) {
+			message.channel.send('Command aborted.');
+			return;
+		}
 
 		// SECOND QUESTION
-		const questionTwo = `The support channel is: <#${queriedServerInfo.supportChannelID}>. Is this correct? (Yes/No)`;
+		const questionTwo = `The support channel is: <#${queriedServerInfo.supportChannelID}>. Would you like to change it? (Yes/No)`;
 		const secondConfirmation = await collectMessageContent(message, questionTwo);
-		if (secondConfirmation !== 'no') throw new Error();
+		if (!(secondConfirmation === 'yes' || secondConfirmation === 'y')) {
+			message.channel.send('Command aborted.');
+			return;
+		}
 
-		// THIRD QUESTION
-		const questionThree = 'Please indicate the new support channel. (#channel)';
-		const updatedSupportChannel = await collectMessageContent(message, questionThree);
-		if (!updatedSupportChannel) throw new Error();
+		let exitLoop = false;
+		let updatedChannelChoice = '';
 
-		// FOURTH QUESTION
-		const questionFour = `You chose: ${updatedSupportChannel}. Please confirm this is the channel you want. (Yes/No)`;
-		const thirdConfirmation = await collectMessageContent(message, questionFour);
-		if (thirdConfirmation !== 'yes') throw new Error();
+		// to do - start loop here
+
+		while (!exitLoop) {
+			// THIRD QUESTION
+			const questionThree = 'Please indicate the new support channel. (#channel)';
+			updatedChannelChoice = await collectMessageContent(message, questionThree);
+			if (!updatedChannelChoice) return;
+
+			// FOURTH QUESTION
+			const questionFour = `You chose: ${updatedChannelChoice}. Please confirm this is the channel you want. (Yes/No)`;
+			const thirdConfirmation = await collectMessageContent(message, questionFour);
+			if (!thirdConfirmation) return;
+			if (thirdConfirmation === 'yes' || thirdConfirmation === 'y') {
+				exitLoop = !exitLoop;
+			}
+		}
+
+		//end loop here
 
 		// UPDATE SUPPORT CHANNEL
-		message.channel.send(`Great! The support channel is now ${updatedSupportChannel} `);
-		queriedServerInfo.supportChannelID = updatedSupportChannel.slice(2, -1);
+		message.channel.send(`Great! The support channel is now ${updatedChannelChoice} `);
+
+		const supportChannelID = updatedChannelChoice.slice(2, -1);
+
+		queriedServerInfo.supportChannelID = supportChannelID;
 		await queriedServerInfo.save();
+
+		const supportChannel = client.channels.cache.find(channel => channel.id === supportChannelID);
+
+		supportChannel.send('fuck off ');
 	} catch (error) {
-		message.channel.send('Error: ' + (error.message || 'Command aborted.'));
+		message.channel.send(error.stack);
 	}
 };

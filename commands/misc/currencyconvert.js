@@ -52,7 +52,9 @@ module.exports = class CurrencyConvertCommand extends Commando.Command {
 
 			const exchangeRate = data.rates[convertedCurrency];
 			const convertedValue = initialValue * exchangeRate;
-			message.channel.send(`${initialValue.toFixed(2)} ${baseCurrency} = ${convertedValue.toFixed(2)} ${convertedCurrency}`);
+			message.channel.send(
+				`${initialValue.toFixed(2)} ${baseCurrency} = ${convertedValue.toFixed(2)} ${convertedCurrency}`
+			);
 		} catch (error) {
 			if (error.name === 'TypeError') {
 				message.channel.send(`Invalid command usage. Use command ${botPrefix}currency-convert help to get assistance.`);

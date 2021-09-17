@@ -1,36 +1,26 @@
 const collectMessageContent = require('../../utilities/collectMessageContent');
 module.exports = async (message, queriedServerInfo) => {
 	// QUESTION 1
-	message.channel.send('You have no filter channel. Would you like to set one up?');
-	const collectConfirmationOne = await message.channel.awaitMessages(response => filter(response, message), config);
-	if (!collectConfirmationOne.first()) throw new Error(errorTimeoutMessage);
-	const confirmationOne = collectConfirmationOne.first().content.toLowerCase();
+	const questionOne = 'You have no filter channel. Would you like to set one up?';
+	const confirmationOne = await collectMessageContent(message, questionOne);
 	if (confirmationOne !== 'yes') throw new Error();
 
 	// QUESTION 2
-	message.channel.send('Please choose a channel to be used for the filter chat.');
-	const collectChannelChoice = await message.channel.awaitMessages(response => filter(response, message), config);
-	if (!collectChannelChoice.first()) throw new Error();
-	const filterChannel = collectChannelChoice.first().content;
+	const questionTwo = 'Please choose a channel to be used for the filter chat.';
+	const filterChannel = await collectMessageContent(message, questionTwo);
 
 	// QUESTION 3
-	message.channel.send(`You chose: ${filterChannel}. Is that correct? (yes/no)`);
-	const collectConfirmationTwo = await message.channel.awaitMessages(response => filter(response, message), config);
-	if (!collectConfirmationTwo.first()) throw new Error(errorTimeoutMessage);
-	const confirmationTwo = collectConfirmationTwo.first().content.toLowerCase();
+	const questionThree = `You chose: ${filterChannel}. Is that correct? (yes/no)`;
+	const confirmationTwo = await collectMessageContent(message, questionThree);
 	if (confirmationTwo !== 'yes') throw new Error();
 
 	// QUESTION 4
-	message.channel.send('Awesome! Please choose a filter phrase.');
-	const collectFilterPhrase = await message.channel.awaitMessages(response => filter(response, message), config);
-	if (!collectFilterPhrase.first()) throw new Error();
-	const filterPhrase = collectFilterPhrase.first().content;
+	const questionFour = 'Awesome! Please choose a filter phrase.';
+	const filterPhrase = await collectMessageContent(message, questionFour);
 
 	// QUESTION 5
-	message.channel.send(`You chose the phrase: '${filterPhrase}'. Is that correct? `);
-	const collectConfirmationThree = await message.channel.awaitMessages(response => filter(response, message), config);
-	if (!collectConfirmationThree.first()) throw new Error();
-	const confirmationThree = collectConfirmationThree.first().content.toLowerCase();
+	const questionFive = `You chose the phrase: '${filterPhrase}'. Is that correct? `;
+	const confirmationThree = await collectMessageContent(message, questionFive);
 	if (confirmationThree !== 'yes') throw new Error();
 
 	// ASSIGN FILTER CHAT
