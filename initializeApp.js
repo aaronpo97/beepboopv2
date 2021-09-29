@@ -37,8 +37,8 @@ module.exports = async client => {
 			console.log('=> ' + guild.name);
 
 			//reset database connections on reboot (for debug purposes only)
-			unregisterGuild(guild);
-			registerGuild(guild);
+			// unregisterGuild(guild);
+			// registerGuild(guild);
 		});
 		console.log(`\nStatus set to ${status == 'online' ? status.green : status.red}.\n`);
 	} catch (error) {
