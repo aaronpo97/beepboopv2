@@ -1,5 +1,5 @@
 const Commando = require('discord.js-commando');
-const respond = require('./respond');
+const responseHandler = require('./responseHandler');
 
 module.exports = class HelloCommand extends Commando.Command {
 	constructor(client) {
@@ -13,5 +13,5 @@ module.exports = class HelloCommand extends Commando.Command {
 			userPermissions: ['MANAGE_MESSAGES'],
 		});
 	}
-	run = async (message, args) => respond(message, args, this.client, this.name);
+	run = async (message, args) => responseHandler(message, args, this.client, this.name);
 };

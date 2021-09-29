@@ -21,6 +21,7 @@ module.exports = async (message, queriedServerInfo, client) => {
 
 		let exitLoop = false;
 		let updatedChannelChoice = '';
+		let ctr = 0;
 
 		// to do - start loop here
 
@@ -35,7 +36,7 @@ module.exports = async (message, queriedServerInfo, client) => {
 			const thirdConfirmation = await collectMessageContent(message, questionFour);
 			if (!thirdConfirmation) return;
 			if (thirdConfirmation === 'yes' || thirdConfirmation === 'y') {
-				exitLoop = !exitLoop;
+				exitLoop = true;
 			}
 		}
 
@@ -51,7 +52,7 @@ module.exports = async (message, queriedServerInfo, client) => {
 
 		const supportChannel = client.channels.cache.find(channel => channel.id === supportChannelID);
 
-		supportChannel.send('fuck off ');
+		supportChannel.send('Support channel updated.');
 	} catch (error) {
 		message.channel.send(error.stack);
 	}

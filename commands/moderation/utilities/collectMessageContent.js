@@ -6,8 +6,7 @@ const cmdTimeoutMessage = `This command will timeout after ${(config.time / 1000
 const filter = (response, message) => response.author.id === message.author.id;
 
 module.exports = async (message, messageToSend) => {
-	if (!messageToSend) throw new Error('Could not collect message responses as you did not give a message to send.');
-
+	if (!messageToSend) throw new Error('Cannot send a blank message.');
 	message.channel.send(messageToSend + '\n' + cmdTimeoutMessage);
 	const collector = await message.channel.awaitMessages(response => filter(response, message), config);
 	if (!collector.first()) {

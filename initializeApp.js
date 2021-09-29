@@ -2,6 +2,10 @@ require('colors');
 const mongoose = require('mongoose');
 const path = require('path');
 const { licenseDisclaimer } = require('./miscUtil');
+const ServerInfo = require('./database/schemas/ServerInfo');
+
+const registerGuild = require('./database/utils/registerGuild');
+const unregisterGuild = require('./database/utils/unregisterGuild');
 
 module.exports = async client => {
 	licenseDisclaimer();
@@ -29,7 +33,13 @@ module.exports = async client => {
 
 		console.log(`${client.user.tag.red} is now live. \n`);
 		console.log(`Now connected to:`);
-		client.guilds.cache.forEach(guild => console.log('=> ' + guild.name));
+		client.guilds.cache.forEach(async guild => {
+			console.log('=> ' + guild.name);
+
+			//reset database connections on reboot (for debug purposes only)
+			unregisterGuild(guild);
+			registerGuild(guild);
+		});
 		console.log(`\nStatus set to ${status == 'online' ? status.green : status.red}.\n`);
 	} catch (error) {
 		console.log('Something went wrong: ' + error.stack);

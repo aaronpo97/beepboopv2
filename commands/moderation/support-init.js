@@ -32,10 +32,19 @@ module.exports = class InitSupportCommand extends Commando.Command {
 
 		if (!supportChannelID) {
 			let exitLoop = false;
+			let ctr = 0;
+			const max = 5;
+
 			while (!exitLoop) {
 				const initQuestion =
-					'Would you like to: **[1]** Create a support channel, or **[2]** Assign a channel for support messages **(1 or 2)**?';
+					'Would you like to:\n\n**[1]** Create a support channel.\n**[2]** Assign a channel for support messages.\n**[3]** Exit';
 				const collectUserChoice = await collectMessageContent(message, initQuestion);
+
+				if (!collectUserChoice) {
+					message.channel.send('Command aborted.');
+					exitLoop = true;
+					return;
+				}
 				const userChoice = collectUserChoice;
 
 				switch (userChoice) {
@@ -47,8 +56,18 @@ module.exports = class InitSupportCommand extends Commando.Command {
 						await assignSupportChannel(message, queriedServerInfo);
 						exitLoop = true;
 						break;
-					default:
+					case '3':
+						message.channel.send('Command aborted.');
+						exitLoop = true;
 						break;
+					default:
+						message.channel.send('Invalid option.');
+						break;
+				}
+				ctr++;
+				if (ctr === max) {
+					message.channel.send('Command aborted.');
+					exitLoop = true;
 				}
 			}
 		} else {

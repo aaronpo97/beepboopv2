@@ -1,5 +1,5 @@
 const Commando = require('discord.js-commando');
-const response = require('./response.json');
+const responseHandler = require('./responseHandler');
 
 const bonk = async message => {
 	await message.react('😳');
@@ -20,18 +20,9 @@ module.exports = class HelloCommand extends Commando.Command {
 			userPermissions: ['MANAGE_MESSAGES'],
 		});
 	}
-	async run(message, args) {
-		const channelID = args.slice(2, -1);
-		const sendToChannel = this.client.channels.cache.find(channel => channel.id === channelID);
-		const responseNum = Math.floor(Math.random() * response.bonk.length);
-		const responseToSend = response.bonk[responseNum];
-		if (!sendToChannel) {
-			message.channel.send(responseToSend);
-			await bonk(message);
-		} else {
-			sendToChannel.send(responseToSend);
-			await message.react('✅');
-			bonk(message);
-		}
-	}
+
+	run = async (message, args) => {
+		responseHandler(message, args, this.client, this.name);
+		bonk(message);
+	};
 };

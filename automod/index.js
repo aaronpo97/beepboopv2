@@ -1,14 +1,14 @@
 const badWords = require('./bannedWords.js');
 
-const findBannedWords = message => {
+const findBannedWords = content => {
 	for (i = 0; i < badWords.length; i++) {
-		if (message.content.toLowerCase().includes(badWords[i].toLowerCase())) return true;
+		if (content.toLowerCase().includes(badWords[i].toLowerCase())) return true;
 	}
 };
 
-const automod = async message => {
+const automod = async (message, content) => {
 	try {
-		if (findBannedWords(message)) {
+		if (findBannedWords(content)) {
 			const reason = 'Zero tolerance for racial slurs.';
 			const target = message.author;
 			const member = message.guild.members.cache.get(target.id);
@@ -17,7 +17,9 @@ const automod = async message => {
 				await message.channel.send(`There is zero tolerance for discrimination and verbal slurs.`);
 			} else {
 				await member.ban({ days: 7, reason: reason }); //refers to what messages to delete and what the ban reason is
-				await message.channel.send(`There is zero tolerance for discrimination and verbal slurs. <@${target.id}> has been banned.`);
+				await message.channel.send(
+					`There is zero tolerance for discrimination and verbal slurs. <@${target.id}> has been banned.`
+				);
 			}
 		}
 	} catch (error) {
