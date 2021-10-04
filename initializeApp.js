@@ -27,18 +27,25 @@ module.exports = async client => {
 		if (!validStatusType.includes(status)) status = 'online';
 		client.user.setStatus(status);
 
-		await mongoose.connect(process.env.MONGO_SERVER_LINK, { useNewUrlParser: true, useUnifiedTopology: true });
+		if (process.argv[3] === 'dev') {
+			await mongoose.connect(process.env.MONGO_SERVER_LINK_DEBUG, { useNewUrlParser: true, useUnifiedTopology: true });
+		} else {
+			await mongoose.connect(process.env.MONGO_SERVER_LINK, { useNewUrlParser: true, useUnifiedTopology: true });
+		}
 
 		console.log('MongoDB connection established. \n');
 
 		console.log(`${client.user.tag.red} is now live. \n`);
 		console.log(`Now connected to:`);
 		client.guilds.cache.forEach(async guild => {
-			console.log('=> ' + guild.name);
+			console.log('=> ' + guild.name.yellow);
 
-			//reset database connections on reboot (for debug purposes only)
-			// unregisterGuild(guild);
-			// registerGuild(guild);
+			if (process.argv[3] === 'dev') {
+				// reset database connections on reboot (for debug purposes only)
+				unregisterGuild(guild);
+				registerGuild(guild);
+				console.log(`Debug database entry for ${guild.name.red} has been reset. \n`);
+			}
 		});
 		console.log(`\nStatus set to ${status == 'online' ? status.green : status.red}.\n`);
 	} catch (error) {

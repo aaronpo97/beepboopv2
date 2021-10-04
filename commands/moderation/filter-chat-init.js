@@ -1,7 +1,10 @@
 const Commando = require('discord.js-commando');
 const ServerInfo = require('../../database/schemas/ServerInfo');
 
-const intializeFilterChat = require('./controllers/filter-chat-init/initializeFilterChat');
+const assignFilterChat = require('./controllers/filter-chat-init/initializeFilterChat');
+const createFilterChat = require('./controllers/filter-chat-init/createFilterChat');
+
+const collectMessageContent = require('./utilities/collectMessageContent');
 // const { messageCollectionConfig } = require('./utilities/collectorUtil');
 
 module.exports = class InitFilterChatCommand extends Commando.Command {
@@ -9,7 +12,7 @@ module.exports = class InitFilterChatCommand extends Commando.Command {
 		super(client, {
 			name: 'filterchat-init',
 			group: 'moderation',
-			aliases: ['filterchat', 'filterchatinit'],
+			aliases: ['filterchat', 'filterchatinit', 'fci'],
 			memberName: 'filterchat-init',
 			description: 'Initialize the filter chat command.',
 			argsType: 'single',
@@ -18,6 +21,7 @@ module.exports = class InitFilterChatCommand extends Commando.Command {
 			guildOnly: true,
 		});
 	}
+
 	async run(message) {
 		const queriedServerInfo = await ServerInfo.findOne({ guildID: message.guild.id });
 		if (!queriedServerInfo) {
@@ -26,56 +30,57 @@ module.exports = class InitFilterChatCommand extends Commando.Command {
 			);
 			return;
 		}
+		const { filterChannelID } = queriedServerInfo.filterChannel;
 
-		let exitLoop = false;
+		if (!filterChannelID) {
+			let exitLoop = false;
+			let ctr = 0;
+			const max = 5;
 
-		if (!queriedServerInfo.filterChannel.filterChannelID) {
-			await intializeFilterChat(message, queriedServerInfo);
-			exitLoop = true;
-		}
-		while (exitLoop === false) {
-			const { filterChannelID, filter } = queriedServerInfo.filterChannel;
-			message.channel.send(`Your filter chat is currently set to <#${filterChannelID}> with the filter: \`'${filter}'\``);
-			message.channel.send(`Would you like to: \n [1] Change the channel, [2] Change the filter phrase., [3] Exit`);
+			while (!exitLoop) {
+				const initQuestion =
+					'Would you like to:\n\n**[1]** Create a filter channel.\n**[2]** Assign a filter channel.\n**[3]** Exit';
+				const collectUserChoice = await collectMessageContent(message, initQuestion);
 
-			const updateCollector = await message.channel.awaitMessages(
-				m => m.author.id === message.author.id,
-				messageCollectionConfig
-			);
-
-			if (!updateCollector.first()) {
-				throw new Error('Command aborted.');
-			}
-
-			const updateOption = updateCollector.first().content;
-			switch (updateOption) {
-				case '1': //change the channel
-					message.channel.send('What channel do you want the filter chat to be set to?');
-					const collectChannelUpdate = await message.channel.awaitMessages(
-						m => m.author.id === message.author.id,
-						messageCollectionConfig
-					);
-
-					const channelUpdate = collectChannelUpdate.first().content;
-					const channelUpdateID = channelUpdate.slice(2, -1);
-
-					queriedServerInfo.filterChannel = { filterChannelID: channelUpdateID, filter };
-					await queriedServerInfo.save();
-					console.log(queriedServerInfo);
-
-					break;
-				case '2': //change the filter phrase
-					message.channel.send('');
-					message.channel.send('u chose 2');
-
-					break;
-				case '3': // exit
-					message.channel.send('command aborted');
+				if (!collectUserChoice) {
+					message.channel.send('Command aborted.');
 					exitLoop = true;
-				default:
-					message.channel.send('Invalid entry.');
-					exitLoop = false;
+					return;
+				}
+				const userChoice = collectUserChoice;
+
+				switch (userChoice) {
+					case '1':
+						const choiceOne = await createFilterChat(message, queriedServerInfo);
+						if (choiceOne) {
+							exitLoop = true;
+						}
+
+						break;
+					case '2':
+						const choiceTwo = await assignFilterChat(message, queriedServerInfo);
+						if (choiceTwo) {
+							exitLoop = true;
+						}
+						break;
+					case '3':
+						message.channel.send('Command aborted.');
+						exitLoop = true;
+						break;
+					default:
+						message.channel.send('Invalid option.');
+						break;
+				}
+				ctr++;
+				if (ctr === max) {
+					message.channel.send('Command aborted.');
+					exitLoop = true;
+				}
 			}
+		} else {
+			// await updateFilterChannel(message, queriedServerInfo, this.client);
+
+			console.log(queriedServerInfo);
 		}
 	}
 };

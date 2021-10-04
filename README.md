@@ -30,19 +30,15 @@ https://discordjs.guide/preparations/setting-up-a-bot-application.html
 ## Step 3: Create a `.env` file to store the following bot information (these are your environment variables for configuration).
 
 How to find user id: `https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-`
+okens)
 
 ```env
 BOT_OWNER=YourUserId
-BOT_PREFIX=YourBotPrefix
+BOT_PREFIX=YourPrefix
 BOT_TOKEN=YourBotToken
-```
-
-Example: (not real tokens)
-
-```env
-BOT_OWNER=1389201830128
-BOT_PREFIX=bot!
-BOT_TOKEN=1242142141444
+MONGO_SERVER_LINK=YourLinkToMongoDBDatabase
+MONGO_SERVER_LINK_DEBUG=YourLinkToMongoDBDatabaseDebug
+CURRENCY_API_KEY=YourTokenHere
 ```
 
 ## Step 4

@@ -53,7 +53,7 @@ module.exports = class InitSupportCommand extends Commando.Command {
 						exitLoop = true;
 						break;
 					case '2':
-						await assignSupportChannel(message, queriedServerInfo);
+						await assignSupportChannel(message, queriedServerInfo, this.client);
 						exitLoop = true;
 						break;
 					case '3':

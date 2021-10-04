@@ -11,7 +11,7 @@ module.exports = async (message, messageToSend) => {
 	const collector = await message.channel.awaitMessages(response => filter(response, message), config);
 	if (!collector.first()) {
 		message.channel.send(errorTimeoutMessage);
-		return;
+		return null;
 	}
 	return collector.first().content.toLowerCase();
 };
