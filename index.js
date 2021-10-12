@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { BOT_OWNER, BOT_PREFIX, BOT_TOKEN } = process.env;
+const { BOT_OWNER, BOT_PREFIX, BOT_TOKEN, BOT_TOKEN_DEBUG } = process.env;
 
 const Commando = require('discord.js-commando');
 const client = new Commando.CommandoClient({ owner: BOT_OWNER, commandPrefix: BOT_PREFIX });
@@ -27,4 +27,4 @@ client.on('guildCreate', guild => registerGuild(guild));
 client.on('guildDelete', guild => unregisterGuild(guild));
 client.on('guildUpdate', (oldGuild, newGuild) => updateGuild(oldGuild, newGuild));
 
-client.login(BOT_TOKEN);
+client.login(process.argv[3] === 'dev' ? BOT_TOKEN_DEBUG : BOT_TOKEN);

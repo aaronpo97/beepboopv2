@@ -27,11 +27,9 @@ module.exports = async client => {
 		if (!validStatusType.includes(status)) status = 'online';
 		client.user.setStatus(status);
 
-		if (process.argv[3] === 'dev') {
-			await mongoose.connect(process.env.MONGO_SERVER_LINK_DEBUG, { useNewUrlParser: true, useUnifiedTopology: true });
-		} else {
-			await mongoose.connect(process.env.MONGO_SERVER_LINK, { useNewUrlParser: true, useUnifiedTopology: true });
-		}
+		const mongoServerLink = process.argv[3] === 'dev' ? process.env.MONGO_SERVER_LINK_DEBUG : process.env.MONGO_SERVER_LINK;
+
+		await mongoose.connect(mongoServerLink, { useNewUrlParser: true, useUnifiedTopology: true });
 
 		console.log('MongoDB connection established. \n');
 

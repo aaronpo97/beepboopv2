@@ -14,8 +14,8 @@ MongoDB: https://docs.mongodb.com/guides/server/install/
 To quickly install all required files on your computer run the following commands in your terminal.
 
 ```bash
-git clone https://github.com/aaronpo97/discord-bot/
-cd discord-bot
+git clone https://github.com/aaronpo97/beepboopv2/
+cd beepboopv2
 npm i
 ```
 
@@ -33,12 +33,19 @@ How to find user id: `https://support.discord.com/hc/en-us/articles/206346498-Wh
 okens)
 
 ```env
-BOT_OWNER=YourUserId
-BOT_PREFIX=YourPrefix
-BOT_TOKEN=YourBotToken
-MONGO_SERVER_LINK=YourLinkToMongoDBDatabase
-MONGO_SERVER_LINK_DEBUG=YourLinkToMongoDBDatabaseDebug
-CURRENCY_API_KEY=YourTokenHere
+BOT_OWNER=500486702024884234
+
+BOT_PREFIX=b!
+BOT_PREFIX_DEBUG=t!
+
+BOT_TOKEN=1234abcd
+BOT_TOKEN_DEBUG=1234abcd
+
+MONGO_SERVER_LINK=1234abcd
+MONGO_SERVER_LINK_DEBUG=1234abcd
+
+CURRENCY_API_KEY=1234abcd
+
 BANNED_WORDS="your, banned, words, go, here"
 ```
 
