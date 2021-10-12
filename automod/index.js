@@ -1,14 +1,12 @@
 require('dotenv').config();
-
-const badWords = require('./bannedWords.js');
+const { BOT_OWNER, BANNED_WORDS } = process.env;
+const blacklistedWords = BANNED_WORDS.split(', ');
 
 const findBannedWords = content => {
-	for (i = 0; i < badWords.length; i++) {
-		if (content.toLowerCase().includes(badWords[i].toLowerCase())) return true;
+	for (let blacklistedWord of blacklistedWords) {
+		if (content.toLowerCase().includes(blacklistedWord.toLowerCase())) return true;
 	}
 };
-
-const { BOT_OWNER } = process.env;
 
 const automod = async (message, content) => {
 	try {
@@ -16,9 +14,16 @@ const automod = async (message, content) => {
 			const reason = 'Zero tolerance for racial slurs.';
 			const target = message.author;
 			const member = message.guild.members.cache.get(target.id);
-			await message.delete();
+
+			setTimeout(async () => {
+				await message.delete();
+			}, 2000);
+
 			if (!member.bannable) {
 				await message.channel.send(`There is zero tolerance for discrimination and verbal slurs.`);
+				await member.send(
+					`You have used a blacklisted word. The message containing the word has been deleted. I am a bot and this action was done automatically.`
+				);
 			} else {
 				await member.ban({ reason }); //refers to what messages to delete and what the ban reason is
 				await message.channel.send(
