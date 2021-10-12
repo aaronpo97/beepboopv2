@@ -1,5 +1,5 @@
-const timeoutAbortMessage = require('../../../utilities/timeoutAbortMessage');
-const collectMessageContent = require('../../../utilities/collectMessageContent');
+const timeoutAbortMessage = require('../utilities/timeoutAbortMessage');
+const collectMessageContent = require('../utilities/collectMessageContent');
 
 module.exports = async (message, channelType = 'stuff') => {
 	try {

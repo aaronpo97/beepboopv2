@@ -39,6 +39,7 @@ BOT_TOKEN=YourBotToken
 MONGO_SERVER_LINK=YourLinkToMongoDBDatabase
 MONGO_SERVER_LINK_DEBUG=YourLinkToMongoDBDatabaseDebug
 CURRENCY_API_KEY=YourTokenHere
+BANNED_WORDS="your, banned, words, go, here"
 ```
 
 ## Step 4

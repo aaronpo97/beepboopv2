@@ -10,6 +10,11 @@ module.exports = async (message, queriedServerInfo) => {
 
 		let filterChannel = '';
 
+		const questionConfirm = 'You selected: **[2]** Assign filter channel. Is that what you wanted? (yes/no)';
+		const confirmFirstChoice = await collectMessageContent(message, questionConfirm);
+		if (!confirmFirstChoice) return true; //abort function and bypass previous loop
+		if (!(confirmFirstChoice === 'yes' || confirmFirstChoice === 'y')) return false; // return to menu and go back to original loop
+
 		while (!exitLoop) {
 			// QUESTION ONE
 			const questionOne = 'Please choose a channel to be used for the filter chat.';

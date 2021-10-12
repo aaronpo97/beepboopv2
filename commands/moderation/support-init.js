@@ -49,12 +49,18 @@ module.exports = class InitSupportCommand extends Commando.Command {
 
 				switch (userChoice) {
 					case '1':
-						await createSupportChannel(message, queriedServerInfo);
-						exitLoop = true;
+						const choiceOne = await createSupportChannel(message, queriedServerInfo);
+						if (choiceOne) {
+							exitLoop = true;
+						}
+
 						break;
 					case '2':
-						await assignSupportChannel(message, queriedServerInfo, this.client);
-						exitLoop = true;
+						const choiceTwo = await assignSupportChannel(message, queriedServerInfo, this.client);
+						if (choiceTwo) {
+							exitLoop = true;
+						}
+
 						break;
 					case '3':
 						message.channel.send('Command aborted.');

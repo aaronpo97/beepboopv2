@@ -8,24 +8,21 @@ module.exports = async (message, queriedServerInfo, client) => {
 		let exitLoop = false;
 
 		// QUESTION ONE
-		const questionOne = 'Please reply with a channel to be used for support messages. (#channel)';
-		let supportChannel = await collectMessageContent(message, questionOne);
-		if (!supportChannel) {
-			message.channel.send('Command aborted.');
-			exitLoop = true;
-			return;
-		}
+		const questionConfirm = 'You selected: **[2]** Assign support channel. Is that what you wanted? (yes/no)';
+		const confirmFirstChoice = await collectMessageContent(message, questionConfirm);
+		if (!confirmFirstChoice) return true; //abort function and bypass previous loop
+		if (!(confirmFirstChoice === 'yes' || confirmFirstChoice === 'y')) return false; // return to menu and go back to original loop
 
+		let supportChannel = '';
 		while (!exitLoop) {
 			//TODO - add some sort of checker to see if it's a valid channel
 
-			if (ctr > 0) {
-				supportChannel = await collectMessageContent(message, questionOne);
-				if (!supportChannel) {
-					message.channel.send('Command aborted.');
-					exitLoop = true;
-					return;
-				}
+			const questionOne = 'Please reply with a channel to be used for support messages. (#channel)';
+			supportChannel = await collectMessageContent(message, questionOne);
+			if (!supportChannel) {
+				message.channel.send('Command aborted.');
+				exitLoop = true;
+				return;
 			}
 			// QUESTION TWO
 			if (ctr === max) {
@@ -54,7 +51,9 @@ module.exports = async (message, queriedServerInfo, client) => {
 
 		const supportChannelChoice = client.channels.cache.find(channel => channel.id === supportChannelID);
 		supportChannelChoice.send('Support channel assigned.');
+
+		return true;
 	} catch (error) {
-		message.channel.send('Error: ' + (error.message || 'Command aborted.'));
+		message.channel.send('Error: ' + (error.message + error.stack || 'Command aborted.'));
 	}
 };

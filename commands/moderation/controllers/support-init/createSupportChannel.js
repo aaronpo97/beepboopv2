@@ -1,43 +1,17 @@
 const collectMessageContent = require('../../utilities/collectMessageContent');
 const Discord = require('discord.js');
+const getChannelName = require('../getChannelName');
 module.exports = async (message, queriedServerInfo) => {
 	try {
 		const questionOne = 'You selected: **[1]** Create support channel. Is that what you wanted? (yes/no)';
 		const confirmFirstChoice = await collectMessageContent(message, questionOne);
-		if (!confirmFirstChoice) return;
+		if (!confirmFirstChoice) true; //bypass previous loop
 		if (!(confirmFirstChoice === 'yes' || confirmFirstChoice === 'y')) {
-			message.channel.send('Command aborted.');
-			return;
+			return false;
 		}
 
-		let exitLoop = false;
-		let channelNameChoice = '';
-		let counter = 0;
-		const max = 5;
-
-		while (!exitLoop) {
-			const questionTwo = 'What do you want to call the support channel? (*Your channel name here*)';
-			channelNameChoice = await collectMessageContent(message, questionTwo);
-			if (!channelNameChoice) {
-				message.channel.send('Command aborted.');
-				return;
-			}
-
-			const questionThree = `The support channel will be called: \`${channelNameChoice}\`. Is that okay? (yes/no)`;
-			const confirmSecondChoice = await collectMessageContent(message, questionThree);
-			if (!confirmSecondChoice) {
-				message.channel.send('Command aborted.');
-				return;
-			}
-
-			if (confirmSecondChoice === 'yes' || confirmSecondChoice === 'y') exitLoop = true;
-
-			if (counter === max) {
-				message.channel.send('Command aborted.');
-				return;
-			}
-			counter++;
-		}
+		const channelNameChoice = await getChannelName(message, 'support channel');
+		if (!channelNameChoice) return true; //abort command and bypass previous loop
 
 		const supportChannel = await message.guild.channels.create(channelNameChoice, {
 			type: 'text',
@@ -64,6 +38,8 @@ module.exports = async (message, queriedServerInfo) => {
 			.setFooter(message.guild.name);
 
 		supportChannel.send(supportChannelEmbed);
+
+		return true;
 		//
 	} catch (error) {
 		message.channel.send(error.message);
