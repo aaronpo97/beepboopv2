@@ -1,7 +1,7 @@
 const Commando = require('discord.js-commando');
 const ServerInfo = require('../../database/schemas/ServerInfo');
 
-const assignFilterChat = require('./controllers/filter-chat-init/initializeFilterChat');
+const assignFilterChat = require('./controllers/filter-chat-init/assignFilterChat');
 const createFilterChat = require('./controllers/filter-chat-init/createFilterChat');
 
 const collectMessageContent = require('./utilities/collectMessageContent');

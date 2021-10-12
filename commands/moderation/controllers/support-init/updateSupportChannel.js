@@ -24,8 +24,6 @@ module.exports = async (message, queriedServerInfo, client) => {
 		let ctr = 0;
 		const max = 2;
 
-		// to do - start loop here
-
 		while (!exitLoop) {
 			// THIRD QUESTION
 			const questionThree = 'Please indicate the new support channel. (#channel)';

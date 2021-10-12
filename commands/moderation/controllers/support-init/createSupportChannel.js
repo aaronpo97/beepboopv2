@@ -30,9 +30,7 @@ module.exports = async (message, queriedServerInfo) => {
 				return;
 			}
 
-			if (confirmSecondChoice === 'yes' || confirmSecondChoice === 'y') {
-				exitLoop = true;
-			}
+			if (confirmSecondChoice === 'yes' || confirmSecondChoice === 'y') exitLoop = true;
 
 			if (counter === max) {
 				message.channel.send('Command aborted.');

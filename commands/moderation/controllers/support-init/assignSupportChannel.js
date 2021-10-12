@@ -28,23 +28,24 @@ module.exports = async (message, queriedServerInfo, client) => {
 				}
 			}
 			// QUESTION TWO
+			if (ctr === max) {
+				message.channel.send('Command aborted.');
+				return true;
+			}
+
 			const questionTwo = `You chose: ${supportChannel}. Is that correct? (yes/no)`;
 			const confirmation = await collectMessageContent(message, questionTwo);
 			if (!confirmation) {
 				message.channel.send('Command aborted.');
-				exitLoop = true;
-				return;
+				return true;
 			}
+
 			if (confirmation === 'yes' || confirmation === 'y') {
 				exitLoop = true;
 			}
-			if (ctr === max) {
-				message.channel.send('Command aborted.');
-				exitLoop = true;
-				return;
-			}
 			ctr++;
 		}
+
 		// ASSIGN SUPPORT CHANNEL
 		message.channel.send(`Awesome! The support channel is now: ${supportChannel}`);
 		const supportChannelID = supportChannel.slice(2, -1);
