@@ -2,7 +2,10 @@ require('dotenv').config();
 const { BOT_OWNER, BOT_PREFIX, BOT_TOKEN, BOT_TOKEN_DEBUG } = process.env;
 
 const Commando = require('discord.js-commando');
-const client = new Commando.CommandoClient({ owner: BOT_OWNER, commandPrefix: BOT_PREFIX });
+const client = new Commando.CommandoClient({
+	owner: BOT_OWNER,
+	commandPrefix: BOT_PREFIX,
+});
 
 const initializeApp = require('./initializeApp');
 const automod = require('./automod');

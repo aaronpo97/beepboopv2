@@ -17,11 +17,12 @@ module.exports = class InitSupportCommand extends Commando.Command {
 	async run(message) {
 		const queriedServerInfo = await ServerInfo.findOne({ guildID: message.guild.id });
 		if (!queriedServerInfo) {
-			message.channel.send('Your server is not intialized with the database.');
+			message.channel.send('Could not delete server from database as it has not been initialized.');
 			return;
 		}
-		const deletedGuild = await unregisterGuild(message.guild);
+		await unregisterGuild(message.guild);
 
+		console.log(`A server was removed from the database:`);
 		message.channel.send(`Your server is now removed from the database.`);
 	}
 };

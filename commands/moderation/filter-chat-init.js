@@ -5,7 +5,10 @@ const assignFilterChat = require('./controllers/filter-chat-init/assignFilterCha
 const createFilterChat = require('./controllers/filter-chat-init/createFilterChat');
 
 const collectMessageContent = require('./utilities/collectMessageContent');
-// const { messageCollectionConfig } = require('./utilities/collectorUtil');
+
+const changeChannel = require('./controllers/filter-chat-init/changeChannel');
+const changeFilterPhrase = require('./controllers/filter-chat-init/changeFilterPhrase');
+const resetFilterChat = require('./controllers/filter-chat-init/resetFilterChat');
 
 module.exports = class InitFilterChatCommand extends Commando.Command {
 	constructor(client) {
@@ -52,16 +55,12 @@ module.exports = class InitFilterChatCommand extends Commando.Command {
 				switch (userChoice) {
 					case '1':
 						const choiceOne = await createFilterChat(message, queriedServerInfo);
-						if (choiceOne) {
-							exitLoop = true;
-						}
+						exitLoop = choiceOne ? true : false;
 
 						break;
 					case '2':
 						const choiceTwo = await assignFilterChat(message, queriedServerInfo);
-						if (choiceTwo) {
-							exitLoop = true;
-						}
+						exitLoop = choiceTwo ? true : false;
 						break;
 					case '3':
 						message.channel.send('Command aborted.');
@@ -78,9 +77,37 @@ module.exports = class InitFilterChatCommand extends Commando.Command {
 				}
 			}
 		} else {
-			// await updateFilterChannel(message, queriedServerInfo, this.client);
+			message.channel.send(`There's already a filter chat.`);
+			const confirmationQuestion = `Would you like to:\n[1] Change the channel\n[2] Change the filter phrase\n[3] Reset and delete filter chat [4] Exit`;
+			const userChoice = await collectMessageContent(message, confirmationQuestion);
+			if (!userChoice) return false;
 
-			console.log(queriedServerInfo);
+			let exitLoop = false;
+			let ctr = 0;
+
+			while (exitLoop) {
+				switch (userChoice) {
+					case '1':
+						const choiceOne = await changeChannel(message, queriedServerInfo);
+						exitLoop = choiceOne ? true : false;
+						break;
+					case '2':
+						const choiceTwo = await changeFilterPhrase(message, queriedServerInfo);
+						exitLoop = choiceTwo ? true : false;
+						break;
+					case '3':
+						const choiceThree = await resetFilterChat(message, queriedServerInfo);
+						exitLoop = choiceThree ? true : false;
+						break;
+					case '4':
+						message.channel.send('Command aborted.');
+
+						exitLoop = choiceFour ? true : false;
+					default:
+						message.channel.send('Invalid option.');
+						ctr++;
+				}
+			}
 		}
 	}
 };

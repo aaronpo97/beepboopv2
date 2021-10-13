@@ -7,6 +7,7 @@ const serverSchema = new Schema({
 	supportChannelID: String,
 	filterChannel: Object,
 	filter: String,
+	members: Number,
 });
 
 const ServerInfo = mongoose.model('Server', serverSchema);
