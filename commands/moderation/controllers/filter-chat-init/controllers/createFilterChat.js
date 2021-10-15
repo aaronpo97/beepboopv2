@@ -1,6 +1,6 @@
-const collectMessageContent = require('../../utilities/collectMessageContent.js');
-const getChannelName = require('../getChannelName');
-const getFilterPhrase = require('./controllers/getFilterPhrase');
+const collectMessageContent = require('../../../utilities/collectMessageContent.js');
+const getChannelName = require('../../getChannelName');
+const getFilterPhrase = require('../utilities/getFilterPhrase');
 
 module.exports = async (message, queriedServerInfo) => {
 	try {

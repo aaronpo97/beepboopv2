@@ -1,6 +1,6 @@
-const collectMessageContent = require('../../utilities/collectMessageContent.js');
-const getFilterPhrase = require('./controllers/getFilterPhrase');
-const timeoutAbortMessage = require('../../utilities/timeoutAbortMessage');
+const collectMessageContent = require('../../../utilities/collectMessageContent.js');
+const getFilterPhrase = require('../utilities/getFilterPhrase');
+const timeoutAbortMessage = require('../../../utilities/timeoutAbortMessage');
 
 module.exports = async (message, queriedServerInfo) => {
 	try {

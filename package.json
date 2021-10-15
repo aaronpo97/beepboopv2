@@ -4,7 +4,7 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "nodemon . dnd dev",
-		"start": "node .",
+		"start": "node . ",
 		"start dnd": "node . dnd",
 		"start invisible": "node . invisible",
 		"start idle": "node . idle"
@@ -12,18 +12,22 @@
 	"author": "Aaron William Po",
 	"dependencies": {
 		"colors": "^1.4.0",
-		"discord.js": "^12.5.1",
+		"discord.js": "^12.5.3",
 		"discord.js-commando": "git+https://github.com/discordjs/commando.git",
-		"dotenv": "^8.2.0",
-		"mongoose": "^5.12.0",
+		"dotenv": "^10.0.0",
+		"mongoose": "^6.0.11",
 		"node-fetch": "^2.6.1"
 	},
+	"description": "# How to use:",
+	"devDependencies": {},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/aaronpo97/discord-bot.git"
+		"url": "git+https://github.com/aaronpo97/beepboopv2.git"
 	},
+	"keywords": [],
+	"license": "ISC",
 	"bugs": {
-		"url": "https://github.com/aaronpo97/discord-bot/issues"
+		"url": "https://github.com/aaronpo97/beepboopv2/issues"
 	},
-	"homepage": "https://github.com/aaronpo97/discord-bot"
+	"homepage": "https://github.com/aaronpo97/beepboopv2#readme"
 }

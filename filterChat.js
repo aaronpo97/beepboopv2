@@ -1,4 +1,3 @@
-//hfdsa
 const ServerInfo = require('./database/schemas/ServerInfo');
 
 module.exports = async (message, content) => {
@@ -9,8 +8,7 @@ module.exports = async (message, content) => {
 		if (!currentGuild) return;
 		if (!currentGuild.filterChannel) return;
 
-		const { filterChannelID } = currentGuild.filterChannel;
-		const { filterPhrase } = currentGuild.filterChannel;
+		const { filterChannelID, filterPhrase } = currentGuild.filterChannel;
 
 		if (!filterPhrase) return;
 

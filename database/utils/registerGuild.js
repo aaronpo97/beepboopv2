@@ -1,6 +1,6 @@
 const ServerInfo = require('../schemas/ServerInfo');
 const registerGuild = async guild => {
-	const { id: guildID, name, memberCount: members } = guild;
+	const { id: guildID, name, memberCount, ownerID } = guild;
 
 	const addedServer = new ServerInfo({
 		name,
@@ -8,9 +8,12 @@ const registerGuild = async guild => {
 		supportChannelID: null,
 		filterChannel: {
 			filterChannelID: null,
-			filter: null,
+			filterPhrase: null,
 		},
-		members,
+		stats: {
+			memberCount,
+			ownerID,
+		},
 	});
 
 	await addedServer.save();

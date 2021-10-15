@@ -6,6 +6,12 @@ const { licenseDisclaimer } = require('./miscUtil');
 const registerGuild = require('./database/utils/registerGuild');
 const unregisterGuild = require('./database/utils/unregisterGuild');
 
+const resetDB = guild => {
+	registerGuild(guild);
+	unregisterGuild(guild);
+	console.log(`Debug database entry for ${guild.name.red} has been reset. \n`);
+};
+
 module.exports = async client => {
 	licenseDisclaimer();
 
@@ -36,10 +42,7 @@ module.exports = async client => {
 			console.log('=> ' + guild.name.yellow);
 
 			if (process.argv[3] === 'dev') {
-				// reset database connections on reboot (for debug purposes only)
-				unregisterGuild(guild);
-				registerGuild(guild);
-				console.log(`Debug database entry for ${guild.name.red} has been reset. \n`);
+				resetDB(guild);
 			}
 		});
 		console.log(`\nStatus set to ${status == 'online' ? status.green : status.red}.\n`);
