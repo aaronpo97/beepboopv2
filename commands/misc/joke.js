@@ -11,6 +11,7 @@ module.exports = class JokeCommand extends Commando.Command {
 			argsType: 'single',
 		});
 	}
+
 	async run(message, args) {
 		try {
 			const res = await fetch('https://icanhazdadjoke.com', { headers: { Accept: 'application/json' } });

@@ -32,9 +32,13 @@ const automod = async (message, content) => {
 				await member.send(
 					`You have been banned from ${message.guild.name} for using a blacklisted word. I am a bot and this action was done automatically.`
 				);
+				console.log(`I just banned ${member.user.name} (id ${member.user.id}) from ${message.guild.name}.`);
 			}
 		}
 	} catch (error) {
+		if (error.message === 'Cannot send messages to this user') {
+			console.log(`Automod: Could not send a DM to user.`);
+		}
 		console.log(`Something went wrong:`, error);
 	}
 };

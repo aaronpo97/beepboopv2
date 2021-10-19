@@ -10,7 +10,7 @@ const client = new Commando.CommandoClient({
 const initializeApp = require('./initializeApp');
 const automod = require('./automod');
 const checkDeletedChannel = require('./database/utils/checkDeletedChannel');
-const { userJoin, userLeave } = require('./database/utils/memberUpdate');
+const guildMemberUpdate = require('./database/utils/guildMemberUpdate');
 const registerGuild = require('./database/utils/registerGuild');
 const unregisterGuild = require('./database/utils/unregisterGuild');
 const updateGuild = require('./database/utils/updateGuild');
@@ -30,7 +30,7 @@ client.on('channelDelete', channel => checkDeletedChannel(channel));
 client.on('guildCreate', guild => registerGuild(guild));
 client.on('guildDelete', guild => unregisterGuild(guild));
 client.on('guildUpdate', (oldGuild, newGuild) => updateGuild(oldGuild, newGuild));
-client.on('guildMemberAdd', member => userJoin(member));
-client.on('guildMemberRemove', member => userLeave(member));
+client.on('guildMemberAdd', member => guildMemberUpdate(member));
+client.on('guildMemberRemove', member => guildMemberUpdate(member));
 
 client.login(process.argv[3] === 'dev' ? BOT_TOKEN_DEBUG : BOT_TOKEN);

@@ -1,7 +1,7 @@
 require('colors');
 const mongoose = require('mongoose');
 const path = require('path');
-const { licenseDisclaimer } = require('./miscUtil');
+const licenseDisclaimer = require('./miscUtil');
 
 const registerGuild = require('./database/utils/registerGuild');
 const unregisterGuild = require('./database/utils/unregisterGuild');
@@ -13,9 +13,9 @@ const resetDB = guild => {
 };
 
 module.exports = async client => {
-	licenseDisclaimer();
-
 	try {
+		console.clear();
+		console.log('Loading...');
 		client.registry
 			.registerGroups([
 				['moderation', 'Moderation commands'],
@@ -34,7 +34,9 @@ module.exports = async client => {
 
 		const mongoServerLink = process.argv[3] === 'dev' ? process.env.MONGO_SERVER_LINK_DEBUG : process.env.MONGO_SERVER_LINK;
 		await mongoose.connect(mongoServerLink, { useNewUrlParser: true, useUnifiedTopology: true });
+		console.clear();
 
+		licenseDisclaimer();
 		console.log('MongoDB connection established. \n');
 		console.log(`${client.user.tag.red} is now live. \n`);
 		console.log(`Now connected to:`);

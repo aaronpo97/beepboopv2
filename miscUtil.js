@@ -4,7 +4,7 @@ const dividingLine = (symbol, num) => {
 		process.stdout.write(symbol);
 	}
 };
-const licenseDisclaimer = () => {
+module.exports = () => {
 	console.log('\n');
 	dividingLine('*', 100);
 	console.log(`\nCopyright © 2021 Aaron William Po.`);
@@ -14,5 +14,3 @@ const licenseDisclaimer = () => {
 	dividingLine('*', 100);
 	console.log('\n');
 };
-
-module.exports.licenseDisclaimer = licenseDisclaimer;
