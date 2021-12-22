@@ -25,11 +25,9 @@ module.exports = class TemperatureConvertCommand extends Commando.Command {
 		});
 	}
 	async run(message, args) {
-		const initialTemp = parseFloat(args[0]);
+		const initialTemp = parseFloat(args[0]).toFixed(2);
 		if (!(initialTemp || initialTemp === 0)) {
-			message.channel.send(
-				`Help: To use command, type \`${botPrefix} temp-convert [temperature] [base unit] [target unit]\`.`
-			);
+			message.channel.send(`Help: To use command, type \`${botPrefix} temp-convert [temperature] [base unit] [target unit]\`.`);
 			return;
 		}
 
@@ -62,10 +60,11 @@ module.exports = class TemperatureConvertCommand extends Commando.Command {
 
 		const conversionMethod = chooseConversionMethod(initialUnit, convertedUnit);
 
+		const convertedTemp = conversionMethod(initialTemp).toFixed(2);
 		message.channel.send(
-			`${initialTemp}${checkIfUsesDegree(initialUnit)} ${initialUnit} is ${conversionMethod(
-				initialTemp
-			)}${checkIfUsesDegree(convertedUnit)} ${convertedUnit}`
+			`${initialTemp}${checkIfUsesDegree(initialUnit)} ${initialUnit} is ${convertedTemp}${checkIfUsesDegree(
+				convertedUnit
+			)} ${convertedUnit}`
 		);
 		if (initialUnit === convertedUnit) {
 			await message.channel.send(`Did you really need me to tell you that? You're a nitwit.`);
