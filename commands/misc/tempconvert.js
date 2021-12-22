@@ -19,15 +19,25 @@ module.exports = class TemperatureConvertCommand extends Commando.Command {
 			name: 'temp-convert',
 			group: 'misc',
 			memberName: 'temp-convert',
-			aliases: ['tempconvert', 'temp-convert', 'tc', 'ct', 'convert-temperature', 'converttemp', 'c-temp'],
+			aliases: [
+				'tempconvert',
+				'temp-convert',
+				'tc',
+				'ct',
+				'convert-temperature',
+				'converttemp',
+				'c-temp',
+			],
 			description: 'Convert temperatures.',
 			argsType: 'multiple',
 		});
 	}
 	async run(message, args) {
-		const initialTemp = parseFloat(args[0]).toFixed(2);
+		const initialTemp = parseFloat(args[0]);
 		if (!(initialTemp || initialTemp === 0)) {
-			message.channel.send(`Help: To use command, type \`${botPrefix} temp-convert [temperature] [base unit] [target unit]\`.`);
+			message.channel.send(
+				`Help: To use command, type \`${botPrefix} temp-convert [temperature] [base unit] [target unit]\`.`
+			);
 			return;
 		}
 
@@ -62,7 +72,9 @@ module.exports = class TemperatureConvertCommand extends Commando.Command {
 
 		const convertedTemp = conversionMethod(initialTemp).toFixed(2);
 		message.channel.send(
-			`${initialTemp}${checkIfUsesDegree(initialUnit)} ${initialUnit} is ${convertedTemp}${checkIfUsesDegree(
+			`${initialTemp}${checkIfUsesDegree(
+				initialUnit
+			)} ${initialUnit} is ${convertedTemp}${checkIfUsesDegree(
 				convertedUnit
 			)} ${convertedUnit}`
 		);

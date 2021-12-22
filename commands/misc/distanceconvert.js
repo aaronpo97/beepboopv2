@@ -20,7 +20,7 @@ class DistanceConvertCommand extends Commando.Command {
 		});
 	}
 	async run(message, args) {
-		const initialDistance = parseFloat(args[0]).toFixed(2);
+		const initialDistance = parseFloat(args[0]);
 		if (!(initialDistance || initialDistance === 0)) {
 			message.channel.send(
 				`Help: To use command, type \`${botPrefix} temp-convert [temperature] [base unit] [target unit]\`.`
@@ -43,7 +43,7 @@ class DistanceConvertCommand extends Commando.Command {
 				message.channel.send('The base unit is not a valid measurement unit.');
 			}
 			if (!validUnits.includes(convertedUnit)) {
-				message.channel.send('The target unit is not a valid  measurement unit.');
+				message.channel.send('The target unit is not a valid measurement unit.');
 			}
 			return;
 		}
@@ -56,7 +56,7 @@ class DistanceConvertCommand extends Commando.Command {
 
 		const conversionMethod = chooseConversionMethod(initialUnit, convertedUnit);
 
-		const convertedDistance = conversionMethod(initialDistance);
+		const convertedDistance = conversionMethod(initialDistance).toFixed(2);
 
 		message.channel.send(
 			`${initialDistance}${initialUnit} is ${convertedDistance}${convertedUnit}`
