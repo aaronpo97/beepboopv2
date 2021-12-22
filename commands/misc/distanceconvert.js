@@ -36,7 +36,6 @@ class DistanceConvertCommand extends Commando.Command {
 
 		const initialUnit = args[1];
 		const convertedUnit = args[2];
-		console.log(convertedUnit);
 
 		if (!(validUnits.includes(initialUnit) && validUnits.includes(convertedUnit))) {
 			if (!validUnits.includes(initialUnit)) {
@@ -59,7 +58,7 @@ class DistanceConvertCommand extends Commando.Command {
 		const convertedDistance = conversionMethod(initialDistance).toFixed(2);
 
 		message.channel.send(
-			`${initialDistance}${initialUnit} is ${convertedDistance}${convertedUnit}`
+			`${initialDistance} ${initialUnit} is ${convertedDistance} ${convertedUnit}`
 		);
 
 		if (initialUnit === convertedUnit) {
