@@ -39,7 +39,9 @@ const automod = async (message, content) => {
 		if (error.message === 'Cannot send messages to this user') {
 			console.log(`Automod: Could not send a DM to user.`);
 		}
+		console.group();
 		console.log(`Something went wrong:`, error);
+		console.groupEnd();
 	}
 };
 
