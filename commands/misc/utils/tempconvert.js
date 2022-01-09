@@ -4,8 +4,8 @@ module.exports = {
 	farToCel: far => (far - 32) * (5 / 9),
 	celToKel: cel => cel + 273.15,
 	kelToCel: kel => kel - 273.15,
-	farToKel: far => celToKel(farToCel(far)),
-	kelToFar: kel => celToFar(kelToCel(kel)),
+	farToKel: far => this.celToKel(farToCel(far)),
+	kelToFar: kel => this.celToFar(kelToCel(kel)),
 	checkIfUsesDegree: unit => (unit === 'K' ? '' : '°'),
 	noConversion: temp => temp,
 };
