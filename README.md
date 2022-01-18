@@ -14,8 +14,8 @@ MongoDB: https://docs.mongodb.com/guides/server/install/
 To quickly install all required files on your computer run the following commands in your terminal.
 
 ```bash
-git clone https://github.com/aaronpo97/beepboopv2/
-cd beepboopv2
+git clone https://github.com/aaronpo97/yerbbot/
+cd yerbbot
 npm i
 ```
 
