@@ -2,3 +2,4 @@
 .env
 node_modules
 .vscode
+commands/custom-cmd/responses.json
